@@ -11,11 +11,11 @@ ignore_https_cert_errors: false
 failed_check_threshold: 5
 send_smtp: true
 smtp:
-  smtp_host: ""
-  smtp_port: 0
-  smtp_email_address: ""
-  smtp_username: ""
-  smtp_password: ""
+  host: ""
+  port: 0
+  email_address: ""
+  username: ""
+  password: ""
 email_recipients:
 - xx@xx.com
 send_sms: false

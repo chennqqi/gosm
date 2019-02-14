@@ -2,5 +2,7 @@
 .idea/
 config.json
 data/gosm.db
+gosm
+config.yml
 vendor/
 builds/

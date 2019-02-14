@@ -21,11 +21,11 @@ type TwoiiSMS struct {
 }
 
 type SMTP struct {
-	Host         string `json:"smtp_host" yaml:"smtp_host"`
-	Port         int    `json:"smtp_port" yaml:"smtp_port"`
-	EmailAddress string `json:"smtp_email_address" yaml:"smtp_email_address"`
-	Username     string `json:"smtp_username" yaml:"smtp_username"`
-	Password     string `json:"smtp_password" yaml:"smtp_password"`
+	Host         string `json:"host" yaml:"host"`
+	Port         int    `json:"port" yaml:"port"`
+	EmailAddress string `json:"email_address" yaml:"email_address"`
+	Username     string `json:"username" yaml:"username"`
+	Password     string `json:"password" yaml:"password"`
 }
 
 // Config The application configuration and settings
