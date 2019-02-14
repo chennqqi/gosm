@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/martywachocki/gosm/alerts"
-	"github.com/martywachocki/gosm/models"
+	"github.com/chennqqi/gosm/alerts"
+	"github.com/chennqqi/gosm/models"
 )
 
 var (
@@ -30,7 +30,7 @@ func checkOnlineServices() {
 				checkChannel <- &models.CurrentServices[i]
 			}
 		}
-		time.Sleep(time.Second * time.Duration(models.CurrentConfig.CheckInterval))
+		time.Sleep(time.Duration(models.CurrentConfig.CheckInterval))
 	}
 }
 
@@ -44,7 +44,7 @@ func checkPendingOfflineServices() {
 				checkChannel <- &models.CurrentServices[i]
 			}
 		}
-		time.Sleep(time.Second * time.Duration(models.CurrentConfig.PendingOfflineCheckInterval))
+		time.Sleep(time.Duration(models.CurrentConfig.PendingOfflineCheckInterval))
 	}
 }
 
@@ -56,7 +56,7 @@ func processChecks() {
 			if service.Status == models.Offline {
 				service.Status = models.Online
 				service.UptimeStart = time.Now().Unix()
-				go alerts.SendAlerts(*service)
+				go alerts.SendAlerts(service)
 			} else if service.Status == models.Pending {
 				service.Status = models.Online
 				if models.CurrentConfig.Verbose {
@@ -75,7 +75,7 @@ func processChecks() {
 				service.FailureCount++
 				if service.FailureCount >= models.CurrentConfig.FailedCheckThreshold {
 					service.Status = models.Offline
-					go alerts.SendAlerts(*service)
+					go alerts.SendAlerts(service)
 				}
 			}
 		}

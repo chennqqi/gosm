@@ -1,0 +1,32 @@
+verbose: true
+web_ui_host: 127.0.0.1
+web_ui_port: 8030
+check_interval: 30s
+pending_offline_check_interval: 5s
+max_concurrent_checks: 5
+connection_timeout: 3s
+successful_http_status_codes:
+- 200
+ignore_https_cert_errors: false
+failed_check_threshold: 5
+send_smtp: true
+smtp:
+  smtp_host: ""
+  smtp_port: 0
+  smtp_email_address: ""
+  smtp_username: ""
+  smtp_password: ""
+email_recipients:
+- xx@xx.com
+send_sms: false
+qcloud_sms:
+  app_id: ""
+  app_key: ""
+  tmpl_id: 0
+qcloud_enable: false
+twoii_sms:
+  twilio_account_sid: ""
+  twilio_auth_token: ""
+  twilio_phone_number: ""
+twoii_enable: false
+sms_recipients: []

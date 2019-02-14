@@ -5,14 +5,15 @@ import (
 	"net/smtp"
 	"strconv"
 
-	"github.com/martywachocki/gosm/models"
+	"github.com/chennqqi/gosm/models"
 )
 
-func sendSMTPAlert(service models.Service) {
+func sendSMTPAlert(service *models.Service) {
+	cfg := &models.CurrentConfig.Smtp
 	auth := smtp.PlainAuth("",
-		models.CurrentConfig.SMTPUsername,
-		models.CurrentConfig.SMTPPassword,
-		models.CurrentConfig.SMTPHost)
+		cfg.Username,
+		cfg.Password,
+		cfg.Host)
 
 	message := "Subject: [gosm] " + service.Name + " is " + service.Status + "\r\n"
 	message += service.Name + " is now " + service.Status + "\r\n"
@@ -22,8 +23,8 @@ func sendSMTPAlert(service models.Service) {
 		message += "Port: " + strconv.FormatInt(service.Port.Int64, 10) + "\r\n"
 	}
 	err := smtp.SendMail(
-		models.CurrentConfig.SMTPHost+":"+strconv.Itoa(models.CurrentConfig.SMTPPort),
-		auth, models.CurrentConfig.SMTPEmailAddress,
+		cfg.Host+":"+strconv.Itoa(cfg.Port),
+		auth, cfg.EmailAddress,
 		models.CurrentConfig.EmailRecipients,
 		[]byte(message))
 	if err != nil {

@@ -56,7 +56,7 @@ func checkHTTP(host string) bool {
 	}
 	client := &http.Client{
 		Transport: transport,
-		Timeout:   time.Millisecond * time.Duration(CurrentConfig.ConnectionTimeout),
+		Timeout:   time.Duration(CurrentConfig.ConnectionTimeout),
 	}
 	response, err := client.Get(host)
 	if err != nil {
@@ -80,7 +80,7 @@ func checkICMP(host string) bool {
 		return false
 	}
 	pinger.Count = 1
-	pinger.Timeout = time.Millisecond * time.Duration(CurrentConfig.ConnectionTimeout)
+	pinger.Timeout = time.Duration(CurrentConfig.ConnectionTimeout)
 	pinger.Run()
 	statistics := pinger.Statistics()
 	return statistics.PacketsSent == statistics.PacketsRecv
@@ -88,7 +88,7 @@ func checkICMP(host string) bool {
 
 func checkTCP(host string, port int64) bool {
 	dialer := &net.Dialer{
-		Timeout: time.Millisecond * time.Duration(CurrentConfig.ConnectionTimeout),
+		Timeout: time.Duration(CurrentConfig.ConnectionTimeout),
 	}
 	connection, err := dialer.Dial("tcp", host+":"+strconv.FormatInt(port, 10))
 	if err != nil {

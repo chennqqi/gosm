@@ -6,23 +6,22 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/martywachocki/gosm/checker"
-	"github.com/martywachocki/gosm/models"
-	"github.com/martywachocki/gosm/web"
+	"github.com/chennqqi/gosm/checker"
+	"github.com/chennqqi/gosm/models"
+	"github.com/chennqqi/gosm/web"
 )
 
 const (
-	version = 1.02
+	version = "1.1"
 )
 
 var (
-	checkChannel      = make(chan *models.Service)
-	checkCountChannel chan (bool)
+	checkChannel = make(chan *models.Service)
 )
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "version" {
-		fmt.Printf("%.2f\n", version)
+		fmt.Println(version)
 		return
 	}
 	fixSIGTERM()
