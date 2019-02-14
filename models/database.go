@@ -44,6 +44,11 @@ func Connect() {
 		if err != nil {
 			panic(err)
 		}
+		database, err = sqlx.Open("sqlite3", databasePath)
+		if err != nil {
+			panic(err)
+		}
+		Database = database
 	}
 }
 
