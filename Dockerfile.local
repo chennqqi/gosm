@@ -1,0 +1,24 @@
+FROM alpine
+LABEL maintainer "q@shellpub.com"
+
+ARG app_name=gosm
+
+RUN apk --update add ca-certificates
+RUN apk --update add --no-cache -t .build-deps \
+	tini \
+	su-exec \
+  && echo "===> Building hmbd daemon..." \
+  && apk del --purge .build-deps
+
+## fix golang link
+RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
+RUN mkdir -p /app/data
+
+# Add hmb soft 
+COPY gosm /app
+
+WORKDIR /app
+
+ENTRYPOINT ["/app/gosm"]
+#ENTRYPOINT ["su-exec","malice","/sbin/tini","--","avscan"]
+CMD ["--help"]

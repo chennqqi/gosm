@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	assetsDir = packr.NewBox("./public")
+	assetsDir = packr.New("mybox", "../public/")
 )
 
 
