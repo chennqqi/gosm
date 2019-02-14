@@ -6,3 +6,5 @@ gosm
 config.yml
 vendor/
 builds/
+packrd/
+*-packr.go

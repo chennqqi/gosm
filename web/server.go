@@ -20,7 +20,7 @@ func Start() {
 	router.HandleFunc("/services", services)
 	router.HandleFunc("/services/{serviceID}", service)
 
-	fs := http.FileServer(http.Dir("./public/"))
+	fs := http.FileServer(assetsDir)
 	router.PathPrefix("/").Handler(fs)
 
 	if models.CurrentConfig.Verbose {
