@@ -5,16 +5,20 @@ import (
 	"encoding/json"
 	"os"
 
-	"io/ioutil"
-
 	"github.com/jmoiron/sqlx"
 	// Add sqlite3 driver
 	_ "github.com/mattn/go-sqlite3"
 )
 
 const (
-	databasePath = "data/gosm.db"
-	setupFile    = "data/setup.sql"
+	databasePath   = "data/gosm.db"
+	createTableSQL = `CREATE TABLE services (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    protocol TEXT NOT NULL,
+    host TEXT NOT NULL,
+    port TEXT
+);`
 )
 
 // Database The sqlite3 database
@@ -36,8 +40,7 @@ func Connect() {
 	}
 	Database = database
 	if needsSetup {
-		setupFile, err := ioutil.ReadFile(setupFile)
-		_, err = Database.Exec(string(setupFile))
+		_, err = Database.Exec(createTableSQL)
 		if err != nil {
 			panic(err)
 		}
