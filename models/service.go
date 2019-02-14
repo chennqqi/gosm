@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"strings"
 
 	"github.com/sparrc/go-ping"
 )
@@ -39,8 +40,10 @@ var (
 // CheckService Checks whether a service is online or offline
 func (service *Service) CheckService() bool {
 	switch service.Protocol {
-	case "http", "https":
+	case "http":
 		return checkHTTP(service.Host)
+	case "https":
+		return checkHTTPS(service.Host)
 	case "icmp":
 		return checkICMP(service.Host)
 	case "tcp":
@@ -52,11 +55,40 @@ func (service *Service) CheckService() bool {
 
 func checkHTTP(host string) bool {
 	transport := &http.Transport{
+	}
+	client := &http.Client{
+		Transport: transport,
+		Timeout:   time.Duration(CurrentConfig.ConnectionTimeout),
+	}
+	if !strings.HasPrefix(host, "http://") {
+		host = "http://" + host
+	}
+	response, err := client.Get(host)
+	if err != nil {
+		return false
+	}
+	defer response.Body.Close()
+	var responseStatusCode = response.StatusCode
+	var isValidStatusCode = false
+	for _, statusCode := range CurrentConfig.SuccessfulHTTPStatusCodes {
+		if responseStatusCode == statusCode {
+			isValidStatusCode = true
+			break
+		}
+	}
+	return isValidStatusCode
+}
+
+func checkHTTPS(host string) bool {
+	transport := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: CurrentConfig.IgnoreHTTPSCertErrors},
 	}
 	client := &http.Client{
 		Transport: transport,
 		Timeout:   time.Duration(CurrentConfig.ConnectionTimeout),
+	}
+	if !strings.HasPrefix(host, "https://") {
+		host = "https://" + host
 	}
 	response, err := client.Get(host)
 	if err != nil {

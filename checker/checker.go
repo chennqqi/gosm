@@ -52,7 +52,7 @@ func processChecks() {
 	for {
 		service := <-checkChannel
 		online := service.CheckService()
-		if online == true {
+		if online {
 			if service.Status == models.Offline {
 				service.Status = models.Online
 				service.UptimeStart = time.Now().Unix()
