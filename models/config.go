@@ -8,6 +8,11 @@ import (
 	"github.com/chennqqi/goutils/yamlconfig"
 )
 
+var (
+	// CurrentConfig The current configuration
+	CurrentConfig Config
+)
+
 type QCloudSMS struct {
 	AppID  string `json:"app_id" yaml:"app_id"`
 	AppKey string `json:"app_key" yaml:"app_key"`
@@ -53,18 +58,10 @@ type Config struct {
 	SMSRecipients []string  `json:"sms_recipients" yaml:"sms_recipients"`
 }
 
-var (
-	// CurrentConfig The current configuration
-	CurrentConfig Config
-)
-
 // ParseConfigFile Parses the config.json file
-func ParseConfigFile() Config {
-	if len(os.Args) < 2 {
-		panic("Expected run syntax: './gosm /path/to/config.yaml'")
-	}
+func ParseConfigFile(confpath string) Config {
 	var cfg Config
-	err := yamlconfig.Load(&cfg, os.Args[1])
+	err := yamlconfig.Load(&cfg, confpath)
 	if os.IsNotExist(err) {
 		yamlconfig.Save(Config{
 			Verbose:                     true,
@@ -79,7 +76,7 @@ func ParseConfigFile() Config {
 			FailedCheckThreshold:        5,
 			SendSMTP:                    true,
 			EmailRecipients:             []string{"xx@xx.com"},
-		}, "")
+		}, confpath)
 	}
 	return cfg
 }

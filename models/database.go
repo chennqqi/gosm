@@ -25,16 +25,16 @@ const (
 var Database *sqlx.DB
 
 // Connect Connects to the sqlite3 database, and creates the database if it does not already exist
-func Connect() {
+func Connect(dbpath string) {
 	var needsSetup = false
-	if _, err := os.Stat(databasePath); os.IsNotExist(err) {
+	if _, err := os.Stat(dbpath); os.IsNotExist(err) {
 		needsSetup = true
 		_, err := os.Create(databasePath)
 		if err != nil {
 			panic(err)
 		}
 	}
-	database, err := sqlx.Open("sqlite3", databasePath)
+	database, err := sqlx.Open("sqlite3", dbpath)
 	if err != nil {
 		panic(err)
 	}
@@ -44,11 +44,11 @@ func Connect() {
 		if err != nil {
 			panic(err)
 		}
-		database, err = sqlx.Open("sqlite3", databasePath)
-		if err != nil {
-			panic(err)
-		}
-		Database = database
+		//		database, err = sqlx.Open("sqlite3", dbpath)
+		//		if err != nil {
+		//			panic(err)
+		//		}
+		//		Database = database
 	}
 }
 

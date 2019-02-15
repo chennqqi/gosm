@@ -1,9 +1,11 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 
 	"github.com/chennqqi/gosm/checker"
@@ -11,23 +13,35 @@ import (
 	"github.com/chennqqi/gosm/web"
 )
 
-const (
-	Version = "1.1"
-)
-
 var (
-	checkChannel = make(chan *models.Service)
+	Version = "1.0.0"
 )
 
 func main() {
+	appName := filepath.Base(os.Args[0])
+
 	if len(os.Args) > 1 && os.Args[1] == "version" {
-		fmt.Println(Version)
+	}
+	var db, conf string
+	var help bool
+	flag.StringVar(&conf, "c", "config.yml", "set config path")
+	flag.StringVar(&db, "d", "gosm.db", "set db path")
+	flag.BoolVar(&help, "h", false, "show useage")
+	if help {
+		fmt.Println(appName, "\t", Version)
+		fmt.Println()
+		fmt.Println("\t -c <config>         set config path, default ./config.yml")
+		fmt.Println("\t -d <db>             set database, default ./gosm.db")
+		fmt.Println("\t -h                  show this usage")
 		return
 	}
+	fmt.Println(appName, "\t", Version)
+
 	fixSIGTERM()
-	models.CurrentConfig = models.ParseConfigFile()
-	models.Connect()
+	models.CurrentConfig = models.ParseConfigFile(conf)
+	models.Connect(db)
 	models.LoadServices()
+
 	go web.Start()
 	checker.Start()
 }
