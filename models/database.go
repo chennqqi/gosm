@@ -11,7 +11,6 @@ import (
 )
 
 const (
-	databasePath   = "data/gosm.db"
 	createTableSQL = `CREATE TABLE services (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -29,10 +28,11 @@ func Connect(dbpath string) {
 	var needsSetup = false
 	if _, err := os.Stat(dbpath); os.IsNotExist(err) {
 		needsSetup = true
-		_, err := os.Create(databasePath)
+		f, err := os.Create(dbpath)
 		if err != nil {
 			panic(err)
 		}
+		f.Close()
 	}
 	database, err := sqlx.Open("sqlite3", dbpath)
 	if err != nil {

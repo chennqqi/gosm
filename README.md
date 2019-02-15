@@ -39,14 +39,14 @@ $ ./gosm -h
 $ cd $GOPATH/src/github.com/chennqqi/gosm
 $ ./builddocker.sh
 
-# Copy config.example.json to /path_to/gosm/config.yml
+# Copy config.example.json to /path_to_gosm/config.yml
 $ cp config.example.json config.yml
 
 # Modify config.yml with your preferred settings
 $ vi config.yml
 
 # Run docker
-$ docker run -d -v /path_to/gosm/:/data/ -d /data -c /data/config.yml
+$  docker run -d -p8030:8030 -v /path_to_gosm/:/data sort/gosm:1.2.0 -d /data/gosm.db -c /data/config.yml
 
 ~~~ 
 

@@ -20,13 +20,12 @@ var (
 func main() {
 	appName := filepath.Base(os.Args[0])
 
-	if len(os.Args) > 1 && os.Args[1] == "version" {
-	}
 	var db, conf string
 	var help bool
 	flag.StringVar(&conf, "c", "config.yml", "set config path")
 	flag.StringVar(&db, "d", "gosm.db", "set db path")
 	flag.BoolVar(&help, "h", false, "show useage")
+	flag.Parse()
 	if help {
 		fmt.Println(appName, "\t", Version)
 		fmt.Println()
